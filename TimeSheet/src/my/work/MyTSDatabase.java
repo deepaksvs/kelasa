@@ -9,7 +9,7 @@ public class MyTSDatabase {
 
 	public void openDB () {
 		boolean createTable = true;
-		File f = new File ("C:/temp/TimeSheetDb.db");
+		File f = new File ("E:/workspaces/eclipse/TimeSheet/TimeSheetDb.db");
 		if (f.exists()) {
 			System.out.println("DB already exists. Connect only");
 			createTable = false;
@@ -17,7 +17,7 @@ public class MyTSDatabase {
 		Statement stmt = null;
 		try {
 			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:C:/temp/TimeSheetDb.db");
+			c = DriverManager.getConnection("jdbc:sqlite:E:/workspaces/eclipse/TimeSheet/TimeSheetDb.db");
 			System.out.println("Opened database successfully");
 		} catch ( Exception e ) {
 			System.err.println("openDB :" + e.getClass().getName() + ": " + e.getMessage() );
@@ -65,12 +65,12 @@ public class MyTSDatabase {
 		}
 	}
 
-	public void endTask (int uid) {
+	public void endTask (int uid, int intervalDuration) {
 		Statement stmt = null;
 		Timestamp ts = new java.sql.Timestamp(new java.util.Date().getTime());
 		try {
 			stmt = c.createStatement();
-			String sql = "UPDATE Events set EndTime = '"+ts+"' where UID="+uid+";";
+			String sql = "UPDATE Events set EndTime='"+ts+"', Duration="+intervalDuration+" where UID="+uid+";";
 			stmt.executeUpdate(sql);
 		} catch (SQLException e) {
 			System.err.println("endTask :" + e.getClass().getName() + ": " + e.getMessage() );
